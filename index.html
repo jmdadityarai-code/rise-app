@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RISE — Lock In</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0a0a0f;color:#fff;font-family:'Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* BG */
+body::before{
+    content:'';position:fixed;top:0;left:0;right:0;bottom:0;
+    background:radial-gradient(ellipse at 30% 20%,rgba(139,92,246,0.08) 0%,transparent 50%),
+    radial-gradient(ellipse at 70% 80%,rgba(255,255,255,0.03) 0%,transparent 50%);
+    pointer-events:none;
+}
+
+/* NAVBAR */
+nav{
+    padding:20px 30px;display:flex;justify-content:space-between;align-items:center;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    position:fixed;width:100%;top:0;z-index:100;
+    background:rgba(10,10,15,0.9);backdrop-filter:blur(20px);
+}
+.logo{font-family:'Space Mono';font-size:20px;font-weight:700;letter-spacing:3px;}
+.logo span{color:#8b5cf6;}
+.nav-streak{
+    background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);
+    padding:8px 20px;border-radius:25px;font-size:13px;color:#a78bfa;
+    font-family:'Space Mono';
+}
+
+/* HERO */
+#home{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:120px 20px 60px;flex-direction:column;
+}
+.day-badge{
+    font-family:'Space Mono';font-size:11px;letter-spacing:4px;
+    color:rgba(255,255,255,0.3);margin-bottom:30px;
+    border:1px solid rgba(255,255,255,0.1);padding:8px 20px;border-radius:25px;
+}
+.streak-number{
+    font-family:'Space Mono';font-size:120px;font-weight:700;line-height:1;
+    background:linear-gradient(135deg,#fff 0%,#8b5cf6 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    margin-bottom:10px;
+}
+.streak-label{font-size:14px;letter-spacing:6px;color:rgba(255,255,255,0.3);margin-bottom:50px;}
+.hero-quote{
+    max-width:500px;font-size:22px;font-weight:600;line-height:1.5;
+    margin-bottom:50px;color:rgba(255,255,255,0.9);
+}
+.hero-quote span{color:#8b5cf6;}
+
+.action-btns{display:flex;gap:15px;flex-wrap:wrap;justify-content:center;}
+.btn-main{
+    background:linear-gradient(135deg,#7c3aed,#8b5cf6);
+    color:#fff;border:none;padding:16px 40px;border-radius:30px;
+    font-family:'Space Grotesk';font-size:15px;font-weight:600;cursor:pointer;
+    transition:all 0.3s;box-shadow:0 0 30px rgba(139,92,246,0.3);
+}
+.btn-main:hover{transform:scale(1.05);box-shadow:0 0 50px rgba(139,92,246,0.5);}
+.btn-ghost{
+    background:transparent;color:rgba(255,255,255,0.6);
+    border:1px solid rgba(255,255,255,0.15);padding:16px 40px;border-radius:30px;
+    font-family:'Space Grotesk';font-size:15px;font-weight:600;cursor:pointer;
+    transition:all 0.3s;
+}
+.btn-ghost:hover{border-color:#8b5cf6;color:#a78bfa;}
+
+/* STATS ROW */
+.stats-row{
+    display:flex;gap:0;margin-top:60px;
+    border:1px solid rgba(255,255,255,0.06);border-radius:20px;overflow:hidden;
+    background:rgba(255,255,255,0.02);
+}
+.stat-box{
+    flex:1;padding:25px;text-align:center;
+    border-right:1px solid rgba(255,255,255,0.06);
+}
+.stat-box:last-child{border-right:none;}
+.stat-box .num{font-family:'Space Mono';font-size:28px;font-weight:700;color:#8b5cf6;}
+.stat-box .lbl{font-size:11px;letter-spacing:2px;color:rgba(255,255,255,0.3);margin-top:5px;}
+
+/* SECTIONS */
+section{padding:80px 30px;max-width:800px;margin:0 auto;}
+.sec-title{font-family:'Space Mono';font-size:11px;letter-spacing:4px;color:#8b5cf6;margin-bottom:15px;}
+.sec-heading{font-size:32px;font-weight:700;margin-bottom:40px;}
+
+/* WORKOUT */
+.workout-grid{display:flex;flex-direction:column;gap:12px;}
+.workout-item{
+    background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);
+    border-radius:15px;padding:20px 25px;display:flex;align-items:center;gap:20px;
+    transition:all 0.3s;cursor:pointer;
+}
+.workout-item:hover{border-color:rgba(139,92,246,0.4);background:rgba(139,92,246,0.05);}
+.workout-item.done{border-color:rgba(139,92,246,0.6);background:rgba(139,92,246,0.1);}
+.workout-check{
+    width:28px;height:28px;border-radius:50%;
+    border:2px solid rgba(255,255,255,0.2);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;flex-shrink:0;transition:all 0.3s;
+}
+.workout-item.done .workout-check{background:#8b5cf6;border-color:#8b5cf6;}
+.workout-name{font-weight:600;font-size:16px;}
+.workout-sets{font-size:13px;color:rgba(255,255,255,0.4);margin-top:3px;}
+.workout-icon{font-size:24px;margin-left:auto;}
+
+/* JOURNAL */
+.journal-box{
+    background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);
+    border-radius:20px;padding:25px;
+}
+.journal-date{font-family:'Space Mono';font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:15px;letter-spacing:2px;}
+#journal-text{
+    width:100%;background:transparent;border:none;color:#fff;
+    font-family:'Space Grotesk';font-size:15px;line-height:1.8;
+    resize:none;height:150px;outline:none;
+}
+#journal-text::placeholder{color:rgba(255,255,255,0.15);}
+.journal-save{
+    margin-top:15px;background:rgba(139,92,246,0.2);
+    border:1px solid rgba(139,92,246,0.3);color:#a78bfa;
+    padding:10px 25px;border-radius:25px;cursor:pointer;
+    font-family:'Space Grotesk';font-size:13px;transition:all 0.3s;
+}
+.journal-save:hover{background:rgba(139,92,246,0.4);}
+
+/* EMERGENCY */
+.emergency-box{
+    background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);
+    border-radius:20px;padding:30px;text-align:center;
+}
+.emergency-title{font-size:20px;font-weight:700;margin-bottom:10px;}
+.emergency-sub{color:rgba(255,255,255,0.4);font-size:14px;margin-bottom:25px;}
+.emergency-btn{
+    background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);
+    color:#f87171;padding:15px 35px;border-radius:30px;cursor:pointer;
+    font-family:'Space Grotesk';font-size:15px;font-weight:600;
+    transition:all 0.3s;display:block;width:100%;margin-bottom:10px;
+}
+.emergency-btn:hover{background:rgba(239,68,68,0.2);}
+.emergency-tips{text-align:left;margin-top:20px;}
+.tip{
+    padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);
+    font-size:14px;color:rgba(255,255,255,0.6);display:flex;gap:10px;
+}
+
+/* VIDEO */
+.video-container{
+    background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);
+    border-radius:20px;overflow:hidden;
+}
+.video-header{padding:20px 25px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.video-title{font-weight:600;font-size:16px;}
+.video-sub{font-size:13px;color:rgba(255,255,255,0.4);margin-top:3px;}
+.video-embed{
+    width:100%;aspect-ratio:16/9;
+    background:rgba(139,92,246,0.05);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+}
+.play-btn{
+    width:70px;height:70px;border-radius:50%;
+    background:rgba(139,92,246,0.3);border:2px solid #8b5cf6;
+    display:flex;align-items:center;justify-content:center;
+    font-size:28px;transition:all 0.3s;
+}
+.play-btn:hover{background:rgba(139,92,246,0.6);transform:scale(1.1);}
+
+/* BOTTOM NAV */
+#bottom-nav{
+    position:fixed;bottom:0;left:0;right:0;
+    background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);
+    border-top:1px solid rgba(255,255,255,0.06);
+    display:flex;padding:12px 0 20px;z-index:100;
+}
+.nav-item{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;
+    cursor:pointer;transition:all 0.3s;color:rgba(255,255,255,0.3);
+    font-size:10px;letter-spacing:1px;
+}
+.nav-item.active{color:#8b5cf6;}
+.nav-icon{font-size:22px;}
+
+/* MODALS */
+.modal{
+    display:none;position:fixed;top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,0.8);backdrop-filter:blur(10px);
+    z-index:200;align-items:center;justify-content:center;
+}
+.modal.show{display:flex;}
+.modal-box{
+    background:#13131a;border:1px solid rgba(255,255,255,0.1);
+    border-radius:25px;padding:40px;max-width:400px;width:90%;text-align:center;
+}
+.modal-icon{font-size:60px;margin-bottom:20px;}
+.modal-title{font-size:24px;font-weight:700;margin-bottom:10px;}
+.modal-sub{color:rgba(255,255,255,0.4);font-size:14px;margin-bottom:30px;line-height:1.6;}
+.modal-close{
+    background:linear-gradient(135deg,#7c3aed,#8b5cf6);
+    color:#fff;border:none;padding:14px 35px;border-radius:25px;
+    font-family:'Space Grotesk';font-size:15px;font-weight:600;cursor:pointer;width:100%;
+}
+
+/* RESET CONFIRM */
+.reset-btns{display:flex;gap:10px;margin-top:20px;}
+.btn-cancel{
+    flex:1;background:transparent;border:1px solid rgba(255,255,255,0.15);
+    color:rgba(255,255,255,0.6);padding:14px;border-radius:25px;cursor:pointer;
+    font-family:'Space Grotesk';font-size:14px;
+}
+.btn-confirm-reset{
+    flex:1;background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.3);
+    color:#f87171;padding:14px;border-radius:25px;cursor:pointer;
+    font-family:'Space Grotesk';font-size:14px;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="logo">RI<span>S</span>E</div>
+    <div class="nav-streak">🔥 Day <span id="nav-day">0</span></div>
+</nav>
+
+<!-- HOME -->
+<div id="home" id="hero-bg" style="position:relative;background-size:cover;background-position:center;transition:all 1s;">
+    <div style="font-size:80px;margin-bottom:10px;" id="warrior-emoji">⚔️</div>
+    <div style="font-family:'Space Mono';font-size:10px;letter-spacing:4px;color:rgba(255,255,255,0.5);margin-bottom:10px;" id="warrior-name">LOADING...</div>
+    <div class="day-badge" id="date-badge">LOADING...</div>
+    <div class="streak-number" id="streak-display">0</div>
+    <div class="streak-label">DAYS STRONG</div>
+    <div style="font-size:20px;font-weight:600;line-height:1.6;max-width:550px;color:rgba(255,255,255,0.9);font-style:italic;margin-bottom:30px;" id="warrior-quote">Loading...</div>
+    <div class="hero-quote" id="daily-quote" style="font-size:14px;color:rgba(255,255,255,0.4);"></div>
+    <div class="action-btns">
+        <button class="btn-main" onclick="checkIn()">✓ Check In Today</button>
+        <button class="btn-ghost" onclick="showReset()">Reset Streak</button>
+    </div>
+    <div class="stats-row">
+        <div class="stat-box">
+            <div class="num" id="best-streak">0</div>
+            <div class="lbl">BEST STREAK</div>
+        </div>
+        <div class="stat-box">
+            <div class="num" id="total-days">0</div>
+            <div class="lbl">TOTAL DAYS</div>
+        </div>
+        <div class="stat-box">
+            <div class="num" id="workouts-done">0</div>
+            <div class="lbl">WORKOUTS</div>
+        </div>
+    </div>
+</div>
+
+<!-- WORKOUT -->
+<section id="workout" style="display:none;">
+    <div class="sec-title">// DAILY GRIND</div>
+    <div class="sec-heading">Today's Calisthenics</div>
+    <div class="workout-grid" id="workout-list"></div>
+</section>
+
+<!-- JOURNAL -->
+<section id="journal" style="display:none;">
+    <div class="sec-title">// REFLECT</div>
+    <div class="sec-heading">Daily Journal</div>
+    <div class="journal-box">
+        <div class="journal-date" id="journal-date">TODAY</div>
+        <textarea id="journal-text" placeholder="How was your day? What are you grateful for? What will you do better tomorrow?"></textarea>
+        <button class="journal-save" onclick="saveJournal()">Save Entry →</button>
+    </div>
+</section>
+
+<!-- EMERGENCY -->
+<section id="emergency" style="display:none;">
+    <div class="sec-title">// HOLD THE LINE</div>
+    <div class="sec-heading">Emergency Mode</div>
+    <div class="emergency-box">
+        <div class="emergency-title">⚡ Stay Strong</div>
+        <div class="emergency-sub">You've come too far to quit now. Every urge passes in 90 seconds.</div>
+        <button class="emergency-btn" onclick="startTimer()">Start 90 Second Timer</button>
+        <div class="emergency-tips">
+            <div class="tip">💧 Drink cold water right now</div>
+            <div class="tip">🏃 Drop and do 20 pushups</div>
+            <div class="tip">🚿 Take a cold shower</div>
+            <div class="tip">📵 Put phone in another room</div>
+            <div class="tip">🧘 Close eyes, breathe deeply</div>
+        </div>
+    </div>
+</section>
+
+<!-- VIDEO -->
+<section id="motivation" style="display:none;">
+    <div class="sec-title">// FUEL UP</div>
+    <div class="sec-heading">Daily Motivation</div>
+    <div class="video-container">
+        <div class="video-header">
+            <div class="video-title" id="vid-title">Today's Fire 🔥</div>
+            <div class="video-sub">Watch this. Every. Single. Day.</div>
+        </div>
+        <div class="video-embed" onclick="openVideo()">
+            <div class="play-btn">▶</div>
+        </div>
+    </div>
+</section>
+
+
+<!-- WARRIORS -->
+<section id="warriors" style="display:none;padding:80px 30px;max-width:800px;margin:0 auto;">
+    <div class="sec-title">// LEARN FROM THE GREATEST</div>
+    <div class="sec-heading">Warriors Who Never Quit</div>
+    <div style="display:flex;flex-direction:column;gap:15px;" id="warriors-list">
+        
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(139,92,246,0.2);border-radius:20px;padding:25px;cursor:pointer;" onclick="toggleWarrior('caesar')">
+            <div style="display:flex;align-items:center;gap:15px;margin-bottom:10px;">
+                <div style="font-size:35px;">⚔️</div>
+                <div>
+                    <div style="font-size:18px;font-weight:700;">Julius Caesar</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:2px;">100 BC — 44 BC</div>
+                </div>
+                <div style="margin-left:auto;color:#8b5cf6;">▼</div>
+            </div>
+            <div id="caesar" style="display:none;color:rgba(255,255,255,0.7);font-size:14px;line-height:1.8;border-top:1px solid rgba(255,255,255,0.06);padding-top:15px;margin-top:5px;">
+                Caesar was captured by pirates at 25. Instead of begging, he LAUGHED at them, told them to raise his ransom, and promised he'd crucify them after. He was released — then hunted every single pirate down and crucified them all. <br><br>
+                <strong style="color:#8b5cf6;">Lesson:</strong> Never let anyone see your fear. Turn every setback into fuel. Your word is your power.
+                <br><br><em style="color:#a78bfa;">"I came, I saw, I conquered." — Julius Caesar</em>
+            </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(139,92,246,0.2);border-radius:20px;padding:25px;cursor:pointer;" onclick="toggleWarrior('alexander')">
+            <div style="display:flex;align-items:center;gap:15px;margin-bottom:10px;">
+                <div style="font-size:35px;">🏛️</div>
+                <div>
+                    <div style="font-size:18px;font-weight:700;">Alexander the Great</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:2px;">356 BC — 323 BC</div>
+                </div>
+                <div style="margin-left:auto;color:#8b5cf6;">▼</div>
+            </div>
+            <div id="alexander" style="display:none;color:rgba(255,255,255,0.7);font-size:14px;line-height:1.8;border-top:1px solid rgba(255,255,255,0.06);padding-top:15px;margin-top:5px;">
+                By age 20, Alexander was king. By 30, he had conquered most of the known world — never losing a single battle. He slept with a copy of Homer under his pillow and a dagger beside it. He trained daily even on campaign. <br><br>
+                <strong style="color:#8b5cf6;">Lesson:</strong> Physical and mental training together. Read. Fight. Lead. Never stop expanding your territory — physical or mental.
+                <br><br><em style="color:#a78bfa;">"There is nothing impossible to him who will try." — Alexander</em>
+            </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(139,92,246,0.2);border-radius:20px;padding:25px;cursor:pointer;" onclick="toggleWarrior('chandragupta')">
+            <div style="display:flex;align-items:center;gap:15px;margin-bottom:10px;">
+                <div style="font-size:35px;">🐯</div>
+                <div>
+                    <div style="font-size:18px;font-weight:700;">Chandragupta Maurya</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:2px;">340 BC — 298 BC</div>
+                </div>
+                <div style="margin-left:auto;color:#8b5cf6;">▼</div>
+            </div>
+            <div id="chandragupta" style="display:none;color:rgba(255,255,255,0.7);font-size:14px;line-height:1.8;border-top:1px solid rgba(255,255,255,0.06);padding-top:15px;margin-top:5px;">
+                Born with nothing — possibly an orphan. Rose from complete poverty to found the Maurya Empire, the largest in Indian history. Trained by Chanakya from childhood in warfare, politics, and discipline. Defeated Alexander's generals when no one thought it possible. <br><br>
+                <strong style="color:#8b5cf6;">Lesson:</strong> Your background means NOTHING. Chandragupta had less than you — and built an empire. Your starting point is not your destiny.
+                <br><br><em style="color:#a78bfa;">"A person should not be too honest. Straight trees are cut first." — Chanakya to Chandragupta</em>
+            </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(139,92,246,0.2);border-radius:20px;padding:25px;cursor:pointer;" onclick="toggleWarrior('musashi')">
+            <div style="display:flex;align-items:center;gap:15px;margin-bottom:10px;">
+                <div style="font-size:35px;">⛩️</div>
+                <div>
+                    <div style="font-size:18px;font-weight:700;">Miyamoto Musashi</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:2px;">1584 — 1645</div>
+                </div>
+                <div style="margin-left:auto;color:#8b5cf6;">▼</div>
+            </div>
+            <div id="musashi" style="display:none;color:rgba(255,255,255,0.7);font-size:14px;line-height:1.8;border-top:1px solid rgba(255,255,255,0.06);padding-top:15px;margin-top:5px;">
+                Japan's greatest samurai. Fought his first duel at age 13. Won 61 duels without losing once. Never married. Never had attachments. Pure discipline. Wrote the Book of Five Rings — still read by CEOs and generals today. <br><br>
+                <strong style="color:#8b5cf6;">Lesson:</strong> Mastery requires sacrifice. Cut out what doesn't serve your mission. Every day is training.
+                <br><br><em style="color:#a78bfa;">"Today is victory over yourself of yesterday." — Miyamoto Musashi</em>
+            </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(139,92,246,0.2);border-radius:20px;padding:25px;cursor:pointer;" onclick="toggleWarrior('leonidas')">
+            <div style="display:flex;align-items:center;gap:15px;margin-bottom:10px;">
+                <div style="font-size:35px;">🛡️</div>
+                <div>
+                    <div style="font-size:18px;font-weight:700;">Leonidas of Sparta</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:2px;">540 BC — 480 BC</div>
+                </div>
+                <div style="margin-left:auto;color:#8b5cf6;">▼</div>
+            </div>
+            <div id="leonidas" style="display:none;color:rgba(255,255,255,0.7);font-size:14px;line-height:1.8;border-top:1px solid rgba(255,255,255,0.06);padding-top:15px;margin-top:5px;">
+                Led 300 Spartans against an army of 100,000+ Persians at Thermopylae. Every Spartan trained from age 7. No softness. No excuses. They held for 3 days — outnumbered 300 to 1 — and changed history forever. <br><br>
+                <strong style="color:#8b5cf6;">Lesson:</strong> Numbers don't matter. Heart does. When everything is against you — that's when legends are made.
+                <br><br><em style="color:#a78bfa;">"Come back with your shield, or on it." — Spartan mothers</em>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- DETOX -->
+<section id="detox" style="display:none;padding:80px 30px;max-width:800px;margin:0 auto;">
+    <div class="sec-title">// MONK MODE</div>
+    <div class="sec-heading">90 Day Challenge</div>
+    
+    <!-- 90 Day Timer -->
+    <div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:20px;padding:30px;text-align:center;margin-bottom:20px;">
+        <div style="font-size:11px;letter-spacing:4px;color:rgba(255,255,255,0.3);margin-bottom:15px;">90 DAY COUNTDOWN</div>
+        <div style="display:flex;gap:20px;justify-content:center;margin-bottom:20px;">
+            <div style="text-align:center;">
+                <div style="font-family:'Space Mono';font-size:48px;font-weight:700;color:#8b5cf6;" id="days-left">90</div>
+                <div style="font-size:10px;letter-spacing:3px;color:rgba(255,255,255,0.3);">DAYS LEFT</div>
+            </div>
+            <div style="text-align:center;">
+                <div style="font-family:'Space Mono';font-size:48px;font-weight:700;color:#fff;" id="days-done">0</div>
+                <div style="font-size:10px;letter-spacing:3px;color:rgba(255,255,255,0.3);">DAYS DONE</div>
+            </div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05);border-radius:10px;height:8px;margin-bottom:20px;">
+            <div id="progress-bar" style="height:100%;background:linear-gradient(90deg,#7c3aed,#8b5cf6);border-radius:10px;width:0%;transition:width 0.5s;"></div>
+        </div>
+        <button onclick="start90Days()" style="background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff;border:none;padding:14px 35px;border-radius:25px;font-family:'Space Grotesk';font-size:14px;font-weight:600;cursor:pointer;" id="start-btn">Start 90 Day Challenge</button>
+    </div>
+
+    <!-- Social Media Detox -->
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:30px;margin-bottom:20px;">
+        <div style="font-size:18px;font-weight:700;margin-bottom:5px;">📵 Social Media Detox</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:25px;">Set your daily limits. Stay accountable.</div>
+        
+        <div style="display:flex;flex-direction:column;gap:15px;" id="social-list">
+            <div style="display:flex;align-items:center;gap:15px;padding:15px;background:rgba(255,255,255,0.03);border-radius:15px;border:1px solid rgba(255,255,255,0.06);">
+                <div style="font-size:28px;">📸</div>
+                <div style="flex:1;">
+                    <div style="font-weight:600;margin-bottom:5px;">Instagram</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.4);">Daily limit</div>
+                </div>
+                <select onchange="setLimit('instagram',this.value)" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);color:#a78bfa;padding:8px 15px;border-radius:20px;font-family:'Space Grotesk';font-size:13px;cursor:pointer;">
+                    <option>0 min</option>
+                    <option>15 min</option>
+                    <option selected>30 min</option>
+                    <option>45 min</option>
+                    <option>1 hour</option>
+                </select>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;padding:15px;background:rgba(255,255,255,0.03);border-radius:15px;border:1px solid rgba(255,255,255,0.06);">
+                <div style="font-size:28px;">▶️</div>
+                <div style="flex:1;">
+                    <div style="font-weight:600;margin-bottom:5px;">YouTube</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.4);">Daily limit</div>
+                </div>
+                <select onchange="setLimit('youtube',this.value)" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);color:#a78bfa;padding:8px 15px;border-radius:20px;font-family:'Space Grotesk';font-size:13px;cursor:pointer;">
+                    <option>0 min</option>
+                    <option>15 min</option>
+                    <option>30 min</option>
+                    <option selected>1 hour</option>
+                    <option>2 hours</option>
+                </select>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;padding:15px;background:rgba(255,255,255,0.03);border-radius:15px;border:1px solid rgba(255,255,255,0.06);">
+                <div style="font-size:28px;">🎵</div>
+                <div style="flex:1;">
+                    <div style="font-weight:600;margin-bottom:5px;">TikTok / Reels</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.4);">Daily limit</div>
+                </div>
+                <select onchange="setLimit('tiktok',this.value)" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);color:#a78bfa;padding:8px 15px;border-radius:20px;font-family:'Space Grotesk';font-size:13px;cursor:pointer;">
+                    <option selected>0 min</option>
+                    <option>15 min</option>
+                    <option>30 min</option>
+                    <option>1 hour</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Daily Goals -->
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:30px;">
+        <div style="font-size:18px;font-weight:700;margin-bottom:5px;">🎯 Today's Non-Negotiables</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:20px;">Things you MUST do today. No excuses.</div>
+        <div style="display:flex;flex-direction:column;gap:10px;" id="goals-list">
+            <div onclick="toggleGoal(this)" style="display:flex;align-items:center;gap:12px;padding:14px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid rgba(255,255,255,0.06);cursor:pointer;transition:all 0.3s;">
+                <div style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:12px;" class="goal-check"></div>
+                <div>No social media before 10 AM</div>
+            </div>
+            <div onclick="toggleGoal(this)" style="display:flex;align-items:center;gap:12px;padding:14px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid rgba(255,255,255,0.06);cursor:pointer;transition:all 0.3s;">
+                <div style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:12px;" class="goal-check"></div>
+                <div>Complete today's workout</div>
+            </div>
+            <div onclick="toggleGoal(this)" style="display:flex;align-items:center;gap:12px;padding:14px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid rgba(255,255,255,0.06);cursor:pointer;transition:all 0.3s;">
+                <div style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:12px;" class="goal-check"></div>
+                <div>Read for 30 minutes</div>
+            </div>
+            <div onclick="toggleGoal(this)" style="display:flex;align-items:center;gap:12px;padding:14px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid rgba(255,255,255,0.06);cursor:pointer;transition:all 0.3s;">
+                <div style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:12px;" class="goal-check"></div>
+                <div>Cold shower</div>
+            </div>
+            <div onclick="toggleGoal(this)" style="display:flex;align-items:center;gap:12px;padding:14px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid rgba(255,255,255,0.06);cursor:pointer;transition:all 0.3s;">
+                <div style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:12px;" class="goal-check"></div>
+                <div>No PMO today</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BOTTOM NAV -->
+<div id="bottom-nav">
+    <div class="nav-item active" onclick="showSection('home',this)">
+        <div class="nav-icon">🔥</div>
+        <div>HOME</div>
+    </div>
+    <div class="nav-item" onclick="showSection('workout',this)">
+        <div class="nav-icon">💪</div>
+        <div>TRAIN</div>
+    </div>
+    <div class="nav-item" onclick="showSection('journal',this)">
+        <div class="nav-icon">📝</div>
+        <div>JOURNAL</div>
+    </div>
+    <div class="nav-item" onclick="showSection('emergency',this)">
+        <div class="nav-icon">⚡</div>
+        <div>HOLD</div>
+    </div>
+    <div class="nav-item" onclick="showSection('detox',this)">
+        <div class="nav-icon">🧘</div>
+        <div>MONK</div>
+    </div>
+    <div class="nav-item" onclick="showSection('warriors',this)">
+        <div class="nav-icon">⚔️</div>
+        <div>WARRIORS</div>
+    </div>
+    <div class="nav-item" onclick="showSection('motivation',this)">
+        <div class="nav-icon">🎥</div>
+        <div>FUEL</div>
+    </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal" id="checkin-modal">
+    <div class="modal-box">
+        <div class="modal-icon">🔥</div>
+        <div class="modal-title">Day <span id="modal-day">1</span> Complete!</div>
+        <div class="modal-sub">You showed up today. That's all it takes. Keep the streak alive.</div>
+        <button class="modal-close" onclick="closeModal('checkin-modal')">Let's Go →</button>
+    </div>
+</div>
+
+<div class="modal" id="reset-modal">
+    <div class="modal-box">
+        <div class="modal-icon">💀</div>
+        <div class="modal-title">Reset Streak?</div>
+        <div class="modal-sub">This will reset your streak to 0. Be honest with yourself. Growth requires truth.</div>
+        <div class="reset-btns">
+            <button class="btn-cancel" onclick="closeModal('reset-modal')">Cancel</button>
+            <button class="btn-confirm-reset" onclick="confirmReset()">Reset</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="timer-modal">
+    <div class="modal-box">
+        <div class="modal-icon">⏱️</div>
+        <div class="modal-title" id="timer-display">90</div>
+        <div class="modal-sub">Breathe. This urge will pass. You are stronger than this moment.</div>
+        <button class="modal-close" onclick="closeModal('timer-modal')">I Made It 💪</button>
+    </div>
+</div>
+
+<script>
+// STANCH Integration — Daily Quote + Image
+const warriorQuotes = [
+    {warrior:"Julius Caesar", quote:"I came, I saw, I conquered.", emoji:"⚔️", color:"linear-gradient(135deg,#1a0a00,#8b1a00,#0a0a0f)"},
+    {warrior:"Alexander the Great", quote:"There is nothing impossible to him who will try.", emoji:"🏛️", color:"linear-gradient(135deg,#000d1a,#003d8f,#0a0a0f)"},
+    {warrior:"Chandragupta Maurya", quote:"Your background means nothing. Rise anyway.", emoji:"🐯", color:"linear-gradient(135deg,#0d0a00,#7a5c00,#0a0a0f)"},
+    {warrior:"Miyamoto Musashi", quote:"Today is victory over yourself of yesterday.", emoji:"⛩️", color:"linear-gradient(135deg,#0a0005,#6b0030,#0a0a0f)"},
+    {warrior:"Leonidas", quote:"Come back with your shield, or on it.", emoji:"🛡️", color:"linear-gradient(135deg,#00100a,#006b3a,#0a0a0f)"},
+    {warrior:"Marcus Aurelius", quote:"You have power over your mind, not outside events.", emoji:"👑", color:"linear-gradient(135deg,#0a0010,#4a0080,#0a0a0f)"},
+    {warrior:"Genghis Khan", quote:"If you are afraid, do not do it. If you do it, do not be afraid.", emoji:"🗡️", color:"linear-gradient(135deg,#050505,#3d3d3d,#0a0a0f)"},
+];
+
+async function getDailyWarrior() {
+    const day = new Date().getDate();
+    const warrior = warriorQuotes[day % warriorQuotes.length];
+    
+    // Set background gradient
+    document.getElementById('home').style.background = warrior.color;
+    
+    // Set warrior emoji + info
+    document.getElementById('warrior-emoji').innerText = warrior.emoji;
+    document.getElementById('warrior-name').innerText = warrior.warrior.toUpperCase();
+    document.getElementById('warrior-quote').innerText = '"' + warrior.quote + '"';
+    
+    // Try STANCH for fresh quote
+    try {
+        const r = await fetch('http://127.0.0.1:5000/chat', {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({message:'Give me one powerful motivational quote from ' + warrior.warrior + ' or about discipline in 15 words max. Only the quote, no explanation.'})
+        });
+        const data = await r.json();
+        if(data.response && data.response.length < 150) {
+            document.getElementById('warrior-quote').innerText = '"' + data.response + '"';
+        }
+    } catch(e) {
+        console.log('STANCH offline — using local quote');
+    }
+}
+
+// Data
+let data = JSON.parse(localStorage.getItem('rise_data') || '{}');
+if (!data.streak) data.streak = 0;
+if (!data.bestStreak) data.bestStreak = 0;
+if (!data.totalDays) data.totalDays = 0;
+if (!data.workoutsDone) data.workoutsDone = 0;
+if (!data.startDate) data.startDate = new Date().toDateString();
+
+function save() { localStorage.setItem('rise_data', JSON.stringify(data)); }
+
+// Quotes
+const quotes = [
+    "The man who masters himself is free.",
+    "Discipline is choosing between what you <span>want now</span> and what you <span>want most</span>.",
+    "Every day is a chance to be <span>better</span> than yesterday.",
+    "Pain is temporary. <span>Quitting</span> lasts forever.",
+    "Your future self is <span>watching</span> your choices today.",
+    "Champions are made when <span>no one is watching</span>.",
+    "Do it for the person you <span>want to become</span>.",
+    "The harder the battle, the <span>sweeter</span> the victory.",
+    "Rise above the <span>storm</span> and you will find sunshine.",
+    "Be the man your <span>younger self</span> needed."
+];
+
+const workouts = [
+    {name:"Push-ups", sets:"4 sets × 20 reps", icon:"💪"},
+    {name:"Pull-ups", sets:"4 sets × 10 reps", icon:"🏋️"},
+    {name:"Dips", sets:"3 sets × 15 reps", icon:"⬇️"},
+    {name:"Squats", sets:"4 sets × 25 reps", icon:"🦵"},
+    {name:"Plank", sets:"3 sets × 60 seconds", icon:"🧘"},
+    {name:"Burpees", sets:"3 sets × 15 reps", icon:"🔥"},
+];
+
+const videos = [
+    {title:"David Goggins — Can't Hurt Me", url:"https://www.youtube.com/watch?v=5tSTk1083VY"},
+    {title:"Andrew Tate — Discipline", url:"https://www.youtube.com/watch?v=BtMkBMv7G5g"},
+    {title:"Jocko Willink — Discipline Equals Freedom", url:"https://www.youtube.com/watch?v=pFDUOcaNq4w"},
+];
+
+// Init
+function init() {
+    const today = new Date();
+    document.getElementById('date-badge').innerText = today.toDateString().toUpperCase();
+    document.getElementById('journal-date').innerText = today.toDateString().toUpperCase();
+    document.getElementById('streak-display').innerText = data.streak;
+    document.getElementById('nav-day').innerText = data.streak;
+    document.getElementById('modal-day').innerText = data.streak + 1;
+    document.getElementById('best-streak').innerText = data.bestStreak;
+    document.getElementById('total-days').innerText = data.totalDays;
+    document.getElementById('workouts-done').innerText = data.workoutsDone;
+    
+    // Random quote
+    const q = quotes[Math.floor(Math.random() * quotes.length)];
+    document.getElementById('daily-quote').innerHTML = q;
+    
+    // Random video
+    const v = videos[Math.floor(Math.random() * videos.length)];
+    document.getElementById('vid-title').innerText = v.title;
+    document.getElementById('vid-url').value = v.url;
+    
+    // Workout
+    const wList = document.getElementById('workout-list');
+    wList.innerHTML = '';
+    workouts.forEach((w, i) => {
+        wList.innerHTML += `
+        <div class="workout-item" id="w${i}" onclick="toggleWorkout(${i})">
+            <div class="workout-check" id="wc${i}"></div>
+            <div>
+                <div class="workout-name">${w.name}</div>
+                <div class="workout-sets">${w.sets}</div>
+            </div>
+            <div class="workout-icon">${w.icon}</div>
+        </div>`;
+    });
+}
+
+function checkIn() {
+    const today = new Date().toDateString();
+    if (data.lastCheckin === today) {
+        alert('Already checked in today! Come back tomorrow. 🔥');
+        return;
+    }
+    data.streak++;
+    data.totalDays++;
+    data.lastCheckin = today;
+    if (data.streak > data.bestStreak) data.bestStreak = data.streak;
+    save();
+    document.getElementById('modal-day').innerText = data.streak;
+    document.getElementById('streak-display').innerText = data.streak;
+    document.getElementById('nav-day').innerText = data.streak;
+    document.getElementById('best-streak').innerText = data.bestStreak;
+    document.getElementById('total-days').innerText = data.totalDays;
+    document.getElementById('checkin-modal').classList.add('show');
+}
+
+function toggleWorkout(i) {
+    const item = document.getElementById('w' + i);
+    const check = document.getElementById('wc' + i);
+    if (item.classList.contains('done')) {
+        item.classList.remove('done');
+        check.innerText = '';
+        data.workoutsDone = Math.max(0, data.workoutsDone - 1);
+    } else {
+        item.classList.add('done');
+        check.innerText = '✓';
+        data.workoutsDone++;
+    }
+    document.getElementById('workouts-done').innerText = data.workoutsDone;
+    save();
+}
+
+function saveJournal() {
+    const text = document.getElementById('journal-text').value;
+    if (!text.trim()) return;
+    const key = 'journal_' + new Date().toDateString();
+    localStorage.setItem(key, text);
+    alert('Journal saved! Keep reflecting. 🧠');
+}
+
+function showReset() { document.getElementById('reset-modal').classList.add('show'); }
+
+function confirmReset() {
+    data.streak = 0;
+    data.lastCheckin = null;
+    save();
+    document.getElementById('streak-display').innerText = 0;
+    document.getElementById('nav-day').innerText = 0;
+    closeModal('reset-modal');
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+let timerInterval;
+function startTimer() {
+    document.getElementById('timer-modal').classList.add('show');
+    let t = 90;
+    document.getElementById('timer-display').innerText = t;
+    timerInterval = setInterval(() => {
+        t--;
+        document.getElementById('timer-display').innerText = t;
+        if (t <= 0) { clearInterval(timerInterval); document.getElementById('timer-display').innerText = '🔥'; }
+    }, 1000);
+}
+
+function openVideo() {
+    const url = document.getElementById('vid-url')?.value || 'https://www.youtube.com/watch?v=5tSTk1083VY';
+    window.open(url, '_blank');
+}
+
+function showSection(id, el) {
+    ['home','workout','journal','emergency','motivation','warriors','detox'].forEach(s => {
+        document.getElementById(s).style.display = 'none';
+    });
+    document.getElementById(id).style.display = id === 'home' ? 'flex' : 'block';
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+    window.scrollTo(0,0);
+}
+
+function start90Days() {
+    const start = new Date().toDateString();
+    localStorage.setItem('rise_90_start', start);
+    update90Days();
+    document.getElementById('start-btn').innerText = 'Challenge Started! 🔥';
+    document.getElementById('start-btn').style.background = 'rgba(139,92,246,0.3)';
+}
+
+function update90Days() {
+    const start = localStorage.getItem('rise_90_start');
+    if (!start) return;
+    const diff = Math.floor((new Date() - new Date(start)) / (1000*60*60*24));
+    const done = Math.min(diff, 90);
+    const left = Math.max(90 - done, 0);
+    document.getElementById('days-left').innerText = left;
+    document.getElementById('days-done').innerText = done;
+    document.getElementById('progress-bar').style.width = (done/90*100) + '%';
+}
+
+function setLimit(app, val) {
+    localStorage.setItem('limit_' + app, val);
+}
+
+function toggleGoal(el) {
+    const check = el.querySelector('.goal-check');
+    if (el.style.borderColor === 'rgb(139, 92, 246)') {
+        el.style.borderColor = 'rgba(255,255,255,0.06)';
+        el.style.background = 'rgba(255,255,255,0.03)';
+        check.innerText = '';
+    } else {
+        el.style.borderColor = 'rgba(139,92,246,0.6)';
+        el.style.background = 'rgba(139,92,246,0.08)';
+        check.innerText = '✓';
+        check.style.background = '#8b5cf6';
+        check.style.border = 'none';
+    }
+}
+
+function toggleWarrior(id) {
+    const el = document.getElementById(id);
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+// Add warriors to showSection
+const origShow = showSection;
+
+getDailyWarrior();
+init();
+update90Days();
+</script>
+<input type="hidden" id="vid-url"/>
+</body>
+</html>
