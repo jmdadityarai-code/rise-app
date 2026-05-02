@@ -262,7 +262,21 @@ section{padding:80px 30px;max-width:800px;margin:0 auto;}
 <section id="workout" style="display:none;">
     <div class="sec-title">// DAILY GRIND</div>
     <div class="sec-heading">Today's Calisthenics</div>
+    <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;" id="level-btns">
+        <button onclick="setLevel('beginner')" style="background:rgba(74,222,128,0.2);border:1px solid rgba(74,222,128,0.4);color:#4ade80;padding:10px 20px;border-radius:20px;cursor:pointer;font-family:'Space Grotesk';font-size:13px;">🌱 Beginner</button>
+        <button onclick="setLevel('intermediate')" style="background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.4);color:#a78bfa;padding:10px 20px;border-radius:20px;cursor:pointer;font-family:'Space Grotesk';font-size:13px;">⚡ Intermediate</button>
+        <button onclick="setLevel('advanced')" style="background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.4);color:#f87171;padding:10px 20px;border-radius:20px;cursor:pointer;font-family:'Space Grotesk';font-size:13px;">🔥 Advanced</button>
+    </div>
     <div class="workout-grid" id="workout-list"></div>
+    <div style="margin-top:20px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:15px;padding:20px;">
+        <div style="font-size:14px;font-weight:600;margin-bottom:10px;">💡 Rest & Recovery</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.8;">
+            • Rest 60-90 sec between sets<br>
+            • Sleep 8 hours minimum<br>
+            • Hydrate — 3-4 litres daily<br>
+            • Rest days: Wednesday & Sunday
+        </div>
+    </div>
 </section>
 
 <!-- JOURNAL -->
@@ -630,14 +644,58 @@ const quotes = [
     "Be the man your <span>younger self</span> needed."
 ];
 
-const workouts = [
-    {name:"Push-ups", sets:"4 sets × 20 reps", icon:"💪"},
-    {name:"Pull-ups", sets:"4 sets × 10 reps", icon:"🏋️"},
-    {name:"Dips", sets:"3 sets × 15 reps", icon:"⬇️"},
-    {name:"Squats", sets:"4 sets × 25 reps", icon:"🦵"},
-    {name:"Plank", sets:"3 sets × 60 seconds", icon:"🧘"},
-    {name:"Burpees", sets:"3 sets × 15 reps", icon:"🔥"},
-];
+const allWorkouts = {
+    beginner: [
+        {name:"Push-ups", sets:"3 sets × 10 reps", icon:"💪", tip:"Keep back straight"},
+        {name:"Knee Squats", sets:"3 sets × 15 reps", icon:"🦵", tip:"Feet shoulder width apart"},
+        {name:"Plank", sets:"3 sets × 20 seconds", icon:"🧘", tip:"Core tight, breathe"},
+        {name:"Jumping Jacks", sets:"3 sets × 30 reps", icon:"⭐", tip:"Warm up properly"},
+        {name:"Glute Bridge", sets:"3 sets × 15 reps", icon:"🍑", tip:"Squeeze at top"},
+        {name:"Wall Sit", sets:"3 sets × 30 seconds", icon:"🧱", tip:"Thighs parallel to floor"},
+    ],
+    intermediate: [
+        {name:"Push-ups", sets:"4 sets × 20 reps", icon:"💪", tip:"Chest to floor"},
+        {name:"Pull-ups", sets:"4 sets × 8 reps", icon:"🏋️", tip:"Full range of motion"},
+        {name:"Dips", sets:"3 sets × 12 reps", icon:"⬇️", tip:"Lean forward slightly"},
+        {name:"Jump Squats", sets:"4 sets × 20 reps", icon:"🦵", tip:"Land softly"},
+        {name:"Pike Push-ups", sets:"3 sets × 12 reps", icon:"🔼", tip:"Hips high"},
+        {name:"L-Sit Hold", sets:"3 sets × 15 seconds", icon:"💺", tip:"Legs straight"},
+        {name:"Burpees", sets:"3 sets × 15 reps", icon:"🔥", tip:"Full extension at top"},
+        {name:"Dragon Flag Negative", sets:"3 sets × 5 reps", icon:"🐉", tip:"Slow and controlled"},
+    ],
+    advanced: [
+        {name:"Archer Push-ups", sets:"4 sets × 10 each", icon:"🏹", tip:"One arm straight"},
+        {name:"Muscle-ups", sets:"4 sets × 5 reps", icon:"💥", tip:"Explosive pull"},
+        {name:"Pistol Squats", sets:"3 sets × 8 each", icon:"🎯", tip:"Balance is key"},
+        {name:"Handstand Push-ups", sets:"3 sets × 8 reps", icon:"🤸", tip:"Wall for support"},
+        {name:"Front Lever Hold", sets:"3 sets × 10 seconds", icon:"⚡", tip:"Body parallel"},
+        {name:"Dragon Flag", sets:"3 sets × 8 reps", icon:"🐉", tip:"Full control"},
+        {name:"One Arm Push-up", sets:"3 sets × 5 each", icon:"☝️", tip:"Wide feet"},
+        {name:"Human Flag", sets:"3 sets × 5 seconds", icon:"🚩", tip:"Build up slowly"},
+    ]
+};
+
+let currentLevel = localStorage.getItem('rise_level') || 'beginner';
+const workouts = allWorkouts[currentLevel];
+
+function setLevel(level) {
+    currentLevel = level;
+    localStorage.setItem('rise_level', level);
+    const wList = document.getElementById('workout-list');
+    wList.innerHTML = '';
+    allWorkouts[level].forEach((w, i) => {
+        wList.innerHTML += `
+        <div class="workout-item" id="w${i}" onclick="toggleWorkout(${i})">
+            <div class="workout-check" id="wc${i}"></div>
+            <div style="flex:1;">
+                <div class="workout-name">${w.name}</div>
+                <div class="workout-sets">${w.sets}</div>
+                <div style="font-size:11px;color:rgba(139,92,246,0.6);margin-top:3px;">💡 ${w.tip}</div>
+            </div>
+            <div class="workout-icon">${w.icon}</div>
+        </div>`;
+    });
+}
 
 const videos = [
     {title:"David Goggins — Can't Hurt Me", url:"https://www.youtube.com/watch?v=5tSTk1083VY"},
@@ -666,20 +724,7 @@ function init() {
     document.getElementById('vid-title').innerText = v.title;
     document.getElementById('vid-url').value = v.url;
     
-    // Workout
-    const wList = document.getElementById('workout-list');
-    wList.innerHTML = '';
-    workouts.forEach((w, i) => {
-        wList.innerHTML += `
-        <div class="workout-item" id="w${i}" onclick="toggleWorkout(${i})">
-            <div class="workout-check" id="wc${i}"></div>
-            <div>
-                <div class="workout-name">${w.name}</div>
-                <div class="workout-sets">${w.sets}</div>
-            </div>
-            <div class="workout-icon">${w.icon}</div>
-        </div>`;
-    });
+    setLevel(currentLevel);
 }
 
 function checkIn() {
