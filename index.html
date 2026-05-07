@@ -517,6 +517,70 @@ section{padding:80px 30px;max-width:800px;margin:0 auto;}
     </div>
 </section>
 
+
+<section id="settings" style="display:none;padding:80px 30px;max-width:800px;margin:0 auto;">
+    <div class="sec-title">// SETTINGS</div>
+    <div class="sec-heading">Customize RISE</div>
+    
+    <div style="display:flex;flex-direction:column;gap:15px;margin-top:30px;">
+        
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:15px;padding:25px;">
+            <div style="font-size:16px;font-weight:600;margin-bottom:20px;">👤 Profile</div>
+            <div style="margin-bottom:15px;">
+                <label style="font-size:12px;color:rgba(255,255,255,0.4);display:block;margin-bottom:8px;">Your Name</label>
+                <input id="user-name" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:12px;border-radius:10px;font-family:'Space Grotesk';font-size:14px;outline:none;" placeholder="Enter your name boss"/>
+            </div>
+            <div style="margin-bottom:15px;">
+                <label style="font-size:12px;color:rgba(255,255,255,0.4);display:block;margin-bottom:8px;">Your Goal</label>
+                <select id="user-goal" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:12px;border-radius:10px;font-family:'Space Grotesk';font-size:14px;outline:none;">
+                    <option>Build Discipline</option>
+                    <option>Get Fit</option>
+                    <option>NoFap Journey</option>
+                    <option>All of the above</option>
+                </select>
+            </div>
+            <button onclick="saveProfile()" style="background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff;border:none;padding:12px 25px;border-radius:25px;cursor:pointer;font-size:14px;font-weight:600;">Save Profile</button>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:15px;padding:25px;">
+            <div style="font-size:16px;font-weight:600;margin-bottom:20px;">🔔 Notifications</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
+                <div>
+                    <div style="font-size:14px;">Morning Reminder</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.4);">Daily 6 AM motivation</div>
+                </div>
+                <div onclick="toggleSetting(this)" style="width:50px;height:26px;background:#8b5cf6;border-radius:13px;cursor:pointer;position:relative;transition:all 0.3s;">
+                    <div style="width:22px;height:22px;background:#fff;border-radius:50%;position:absolute;top:2px;right:2px;transition:all 0.3s;"></div>
+                </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                    <div style="font-size:14px;">Workout Reminder</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.4);">Daily workout push</div>
+                </div>
+                <div onclick="toggleSetting(this)" style="width:50px;height:26px;background:#8b5cf6;border-radius:13px;cursor:pointer;position:relative;transition:all 0.3s;">
+                    <div style="width:22px;height:22px;background:#fff;border-radius:50%;position:absolute;top:2px;right:2px;transition:all 0.3s;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:15px;padding:25px;">
+            <div style="font-size:16px;font-weight:600;margin-bottom:20px;">🎯 Workout Level</div>
+            <div style="display:flex;gap:10px;">
+                <button onclick="setLevel('beginner')" style="flex:1;background:rgba(74,222,128,0.2);border:1px solid rgba(74,222,128,0.4);color:#4ade80;padding:12px;border-radius:15px;cursor:pointer;font-size:13px;">🌱 Beginner</button>
+                <button onclick="setLevel('intermediate')" style="flex:1;background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.4);color:#a78bfa;padding:12px;border-radius:15px;cursor:pointer;font-size:13px;">⚡ Intermediate</button>
+                <button onclick="setLevel('advanced')" style="flex:1;background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.4);color:#f87171;padding:12px;border-radius:15px;cursor:pointer;font-size:13px;">🔥 Advanced</button>
+            </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:15px;padding:25px;">
+            <div style="font-size:16px;font-weight:600;margin-bottom:15px;">⚠️ Danger Zone</div>
+            <button onclick="resetAll()" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#f87171;padding:12px 25px;border-radius:25px;cursor:pointer;font-size:13px;width:100%;">Reset All Data</button>
+        </div>
+
+    </div>
+</section>
+
 <!-- BOTTOM NAV -->
 <div id="bottom-nav">
     <div class="nav-item active" onclick="showSection('home',this)">
@@ -801,7 +865,7 @@ function openVideo() {
 }
 
 function showSection(id, el) {
-    ['home','workout','journal','emergency','motivation','warriors','detox'].forEach(s => {
+    ['home','workout','journal','emergency','motivation','warriors','detox','settings'].forEach(s => {
         document.getElementById(s).style.display = 'none';
     });
     document.getElementById(id).style.display = id === 'home' ? 'flex' : 'block';
@@ -845,6 +909,35 @@ function toggleGoal(el) {
         check.innerText = '✓';
         check.style.background = '#8b5cf6';
         check.style.border = 'none';
+    }
+}
+
+function saveProfile() {
+    const name = document.getElementById('user-name').value;
+    const goal = document.getElementById('user-goal').value;
+    if(name) localStorage.setItem('rise_name', name);
+    localStorage.setItem('rise_goal', goal);
+    alert('Saved boss! Welcome ' + name + ' 🔥');
+}
+
+function toggleSetting(el) {
+    const dot = el.querySelector('div');
+    if(el.style.background === 'rgb(139, 92, 246)') {
+        el.style.background = 'rgba(255,255,255,0.1)';
+        dot.style.right = 'auto';
+        dot.style.left = '2px';
+    } else {
+        el.style.background = '#8b5cf6';
+        dot.style.left = 'auto';
+        dot.style.right = '2px';
+    }
+}
+
+function resetAll() {
+    if(confirm('Reset everything? This cannot be undone!')) {
+        localStorage.clear();
+        alert('Reset done. Day 1 again boss!');
+        location.reload();
     }
 }
 

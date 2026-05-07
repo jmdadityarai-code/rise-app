@@ -1,0 +1,14 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#0a0a0f" rx="100"/>
+  <text x="256" y="300" 
+    font-family="Arial Black" 
+    font-size="180" 
+    font-weight="900"
+    fill="white"
+    text-anchor="middle"
+    letter-spacing="8">RISE</text>
+  <line x1="80" y1="340" x2="432" y2="340" 
+    stroke="#8b5cf6" stroke-width="6"/>
+  <polygon points="256,60 290,150 380,150 310,205 335,295 256,240 177,295 202,205 132,150 222,150" 
+    fill="#8b5cf6" opacity="0.15"/>
+</svg>
