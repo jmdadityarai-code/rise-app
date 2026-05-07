@@ -581,6 +581,110 @@ section{padding:80px 30px;max-width:800px;margin:0 auto;}
     </div>
 </section>
 
+
+<section id="health" style="display:none;padding:80px 30px;max-width:800px;margin:0 auto;">
+    <div class="sec-title">// HEALTH TRACKER</div>
+    <div class="sec-heading">Daily Health</div>
+
+    <!-- Step Counter -->
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:30px;margin-bottom:20px;text-align:center;">
+        <div style="font-size:11px;letter-spacing:4px;color:rgba(255,255,255,0.3);margin-bottom:15px;">👟 STEP COUNTER</div>
+        <div style="font-family:'Space Mono';font-size:64px;font-weight:700;color:#8b5cf6;" id="step-count">0</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin:5px 0;">STEPS TODAY</div>
+        <div style="display:flex;gap:20px;justify-content:center;margin:20px 0;">
+            <div style="text-align:center;">
+                <div style="font-family:'Space Mono';font-size:24px;font-weight:700;color:#4ade80;" id="km-count">0.00</div>
+                <div style="font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.3);">KILOMETERS</div>
+            </div>
+            <div style="text-align:center;">
+                <div style="font-family:'Space Mono';font-size:24px;font-weight:700;color:#f59e0b;" id="cal-count">0</div>
+                <div style="font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.3);">CALORIES</div>
+            </div>
+            <div style="text-align:center;">
+                <div style="font-family:'Space Mono';font-size:24px;font-weight:700;color:#60a5fa;" id="time-count">0</div>
+                <div style="font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.3);">MINUTES</div>
+            </div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05);border-radius:10px;height:8px;margin:15px 0;">
+            <div id="step-bar" style="height:100%;background:linear-gradient(90deg,#7c3aed,#8b5cf6);border-radius:10px;width:0%;transition:width 0.5s;"></div>
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.3);">Goal: 10,000 steps</div>
+        <div style="display:flex;gap:10px;justify-content:center;margin-top:20px;">
+            <button onclick="addSteps(100)" style="background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.3);color:#a78bfa;padding:10px 20px;border-radius:20px;cursor:pointer;font-size:13px;">+100 Steps</button>
+            <button onclick="addSteps(500)" style="background:rgba(139,92,246,0.3);border:1px solid rgba(139,92,246,0.4);color:#a78bfa;padding:10px 20px;border-radius:20px;cursor:pointer;font-size:13px;">+500 Steps</button>
+            <button onclick="addSteps(1000)" style="background:rgba(139,92,246,0.4);border:1px solid rgba(139,92,246,0.5);color:#fff;padding:10px 20px;border-radius:20px;cursor:pointer;font-size:13px;">+1000 Steps</button>
+        </div>
+        <button onclick="resetSteps()" style="margin-top:10px;background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:8px 20px;border-radius:20px;cursor:pointer;font-size:12px;">Reset Today</button>
+    </div>
+
+    <!-- Water Reminder -->
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(96,165,250,0.3);border-radius:20px;padding:30px;margin-bottom:20px;">
+        <div style="font-size:18px;font-weight:700;margin-bottom:5px;">💧 Water Reminder</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:20px;">Stay hydrated. Every hour counts.</div>
+        
+        <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+            <button onclick="setWaterReminder(60)" style="background:rgba(96,165,250,0.2);border:1px solid rgba(96,165,250,0.3);color:#60a5fa;padding:10px 18px;border-radius:20px;cursor:pointer;font-size:13px;">Every 1 Hour</button>
+            <button onclick="setWaterReminder(90)" style="background:rgba(96,165,250,0.2);border:1px solid rgba(96,165,250,0.3);color:#60a5fa;padding:10px 18px;border-radius:20px;cursor:pointer;font-size:13px;">Every 90 Min</button>
+            <button onclick="setWaterReminder(120)" style="background:rgba(96,165,250,0.2);border:1px solid rgba(96,165,250,0.3);color:#60a5fa;padding:10px 18px;border-radius:20px;cursor:pointer;font-size:13px;">Every 2 Hours</button>
+        </div>
+
+        <div style="display:flex;gap:15px;align-items:center;margin-bottom:20px;">
+            <div style="font-size:48px;">💧</div>
+            <div>
+                <div style="font-family:'Space Mono';font-size:36px;font-weight:700;color:#60a5fa;" id="water-count">0</div>
+                <div style="font-size:12px;color:rgba(255,255,255,0.4);">glasses today (8 = goal)</div>
+            </div>
+        </div>
+
+        <div style="display:flex;gap:10px;">
+            <button onclick="addWater()" style="flex:1;background:rgba(96,165,250,0.3);border:1px solid rgba(96,165,250,0.4);color:#60a5fa;padding:14px;border-radius:15px;cursor:pointer;font-size:15px;font-weight:600;">+ Drank Water 💧</button>
+            <button onclick="resetWater()" style="background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:14px 20px;border-radius:15px;cursor:pointer;font-size:13px;">Reset</button>
+        </div>
+
+        <div id="water-status" style="margin-top:15px;padding:12px;background:rgba(96,165,250,0.1);border-radius:10px;font-size:13px;color:#60a5fa;text-align:center;display:none;">
+            ✅ Reminder set! You'll get notified.
+        </div>
+    </div>
+
+    <!-- Creatine Reminder -->
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(52,211,153,0.3);border-radius:20px;padding:25px;">
+        <div style="font-size:18px;font-weight:700;margin-bottom:5px;">💊 Supplement Reminder</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:20px;">Creatine, Protein, Vitamins — track it all.</div>
+        <div style="display:flex;flex-direction:column;gap:10px;" id="supplement-list">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid rgba(255,255,255,0.06);">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <div style="font-size:24px;">💪</div>
+                    <div>
+                        <div style="font-weight:600;">Creatine</div>
+                        <div style="font-size:12px;color:rgba(255,255,255,0.4);">5g daily — post workout</div>
+                    </div>
+                </div>
+                <button onclick="markSupplement(this)" style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);color:#34d399;padding:8px 16px;border-radius:20px;cursor:pointer;font-size:12px;">Mark Done</button>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid rgba(255,255,255,0.06);">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <div style="font-size:24px;">🥛</div>
+                    <div>
+                        <div style="font-weight:600;">Protein</div>
+                        <div style="font-size:12px;color:rgba(255,255,255,0.4);">Post workout shake</div>
+                    </div>
+                </div>
+                <button onclick="markSupplement(this)" style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);color:#34d399;padding:8px 16px;border-radius:20px;cursor:pointer;font-size:12px;">Mark Done</button>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid rgba(255,255,255,0.06);">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <div style="font-size:24px;">☀️</div>
+                    <div>
+                        <div style="font-weight:600;">Vitamin D</div>
+                        <div style="font-size:12px;color:rgba(255,255,255,0.4);">Morning with breakfast</div>
+                    </div>
+                </div>
+                <button onclick="markSupplement(this)" style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);color:#34d399;padding:8px 16px;border-radius:20px;cursor:pointer;font-size:12px;">Mark Done</button>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- BOTTOM NAV -->
 <div id="bottom-nav">
     <div class="nav-item active" onclick="showSection('home',this)">
@@ -872,6 +976,73 @@ function showSection(id, el) {
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     el.classList.add('active');
     window.scrollTo(0,0);
+}
+
+// Step Counter
+let steps = parseInt(localStorage.getItem('rise_steps') || '0');
+function updateSteps() {
+    document.getElementById('step-count').innerText = steps;
+    const km = (steps * 0.000762).toFixed(2);
+    const cal = Math.floor(steps * 0.04);
+    const mins = Math.floor(steps / 100);
+    document.getElementById('km-count').innerText = km;
+    document.getElementById('cal-count').innerText = cal;
+    document.getElementById('time-count').innerText = mins;
+    document.getElementById('step-bar').style.width = Math.min((steps/10000)*100, 100) + '%';
+}
+function addSteps(n) {
+    steps += n;
+    localStorage.setItem('rise_steps', steps);
+    updateSteps();
+}
+function resetSteps() {
+    steps = 0;
+    localStorage.setItem('rise_steps', 0);
+    updateSteps();
+}
+updateSteps();
+
+// Water
+let waterCount = parseInt(localStorage.getItem('rise_water') || '0');
+function updateWater() {
+    document.getElementById('water-count').innerText = waterCount;
+}
+function addWater() {
+    waterCount++;
+    localStorage.setItem('rise_water', waterCount);
+    updateWater();
+    if(waterCount >= 8) alert('Goal achieved! 8 glasses done today boss! 💧');
+}
+function resetWater() {
+    waterCount = 0;
+    localStorage.setItem('rise_water', 0);
+    updateWater();
+}
+updateWater();
+
+// Water Reminder
+function setWaterReminder(mins) {
+    document.getElementById('water-status').style.display = 'block';
+    localStorage.setItem('water_reminder', mins);
+    if(Notification.permission === 'granted') {
+        setInterval(() => {
+            new Notification('💧 RISE — Drink Water!', {
+                body: 'Time to hydrate boss! Stay strong.',
+            });
+        }, mins * 60 * 1000);
+    } else {
+        Notification.requestPermission().then(p => {
+            if(p === 'granted') setWaterReminder(mins);
+        });
+    }
+}
+
+// Supplements
+function markSupplement(btn) {
+    btn.innerText = '✅ Done!';
+    btn.style.background = 'rgba(52,211,153,0.3)';
+    btn.style.color = '#34d399';
+    btn.disabled = true;
 }
 
 function start90Days() {
